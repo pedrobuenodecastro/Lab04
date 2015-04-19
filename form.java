@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 
 public class form extends JFrame {
 
+	//as novas variaveis para os novos campos foram criadas
 	public JPanel contentPane;
 	public JTextField textfirstName;
 	public JTextField textlastName;
@@ -47,13 +48,33 @@ public class form extends JFrame {
 		});
 	}
 	
-	private boolean cep_validate(){
-		if(textCEP.getText().length() != 8){
-			JOptionPane.showMessageDialog(null, "CEP inválido");
-			return false;
+	private boolean email_validate(){
+		if(textEmail.getText().matches(".+@.+\\.com(.br)?")){
+			return true;
 		}
 		else{
+			JOptionPane.showMessageDialog(null, "Email inválido");
+			return false;
+		}
+	}
+	
+	private boolean data_validate(){
+		if(textDataNascimento.getText().matches("\\d{2}/\\d{2}/\\d{4}")){
 			return true;
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "Data de Nascimento inválida. Favor entrar com o formato dd/mm/aaaa");
+			return false;
+		}
+	}
+	
+	private boolean cep_validate(){
+		if(textCEP.getText().matches("(\\d{5}-\\d{3})?")){
+			return true;
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "CEP inválido. Favor entrar com *****-***");
+			return false;
 		}
 	}
 	
@@ -75,6 +96,7 @@ public class form extends JFrame {
 				i ++;
 				dig --;
 			}
+			//algoritmo padrao para verificacao do CPF
 			if(((sum % 11) > 2 && values[9] == (11 - (sum % 11)) || ((sum % 11) < 2 && values[9] == 0))){
 				i = 0;
 				sum = 0;
@@ -98,7 +120,7 @@ public class form extends JFrame {
 			}
 		}
 	}
-	
+	//verifica se os campos considerados como obrigatorios foram preenchidos
 	private boolean verify(){
 		if(textfirstName.getText().equals("") || textlastName.getText().equals("")
 			|| textDataNascimento.getText().equals("") || textEmail.getText().equals("")
@@ -247,7 +269,7 @@ public class form extends JFrame {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {		
 				//contentPane.setVisible(false);	
-					if(verify() && cpf_validate() && cep_validate()){	//so imprime o formulario se as condicoes forem satisfeitas
+					if(verify() && cpf_validate() && cep_validate() && data_validate() && email_validate()){	//so imprime o formulario se as condicoes forem satisfeitas
 					print printForm = new print();
 					printForm.titleLabel.setText((String) comboTitle.getSelectedItem());
 					printForm.firstNameLabel.setText(textfirstName.getText());
